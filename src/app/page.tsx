@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from "next/image";
@@ -14,12 +15,12 @@ export default function OnboardingPage() {
 
       <main className="flex-1 flex flex-col items-center justify-center text-center p-6 space-y-8">
         <Image
-          src="https://i.ibb.co/L6VfC13/Female-doctor-and-patient-talking-in-the-clinic.png"
-          alt="A friendly doctor talking with a patient"
+          src="https://i.ibb.co/bJC2Sgt/Female-doctor-holding-tablet-with-health-icons.png"
+          alt="A friendly doctor holding a tablet with health icons"
           width={400}
           height={400}
           className="max-w-xs sm:max-w-sm rounded-lg"
-          data-ai-hint="doctor patient"
+          data-ai-hint="doctor health"
         />
         <div className="space-y-2 max-w-md">
           <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
