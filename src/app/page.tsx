@@ -1,7 +1,6 @@
 
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/icons";
@@ -13,17 +12,9 @@ export default function OnboardingPage() {
         <Logo className="h-10 w-10 text-primary" />
       </header>
 
-      <main className="flex-1 flex flex-col items-center justify-center text-center p-6 space-y-8">
-        <Image
-          src="https://i.ibb.co/bJC2Sgt/Female-doctor-holding-tablet-with-health-icons.png"
-          alt="A friendly doctor holding a tablet with health icons"
-          width={400}
-          height={400}
-          className="max-w-xs sm:max-w-sm rounded-lg"
-          data-ai-hint="doctor health"
-        />
+      <main className="flex-1 flex flex-col items-center justify-center text-center p-6">
         <div className="space-y-2 max-w-md">
-          <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+          <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl animate-fade-in">
             The smart, simple, and effective way to understand your health!
           </h1>
         </div>
