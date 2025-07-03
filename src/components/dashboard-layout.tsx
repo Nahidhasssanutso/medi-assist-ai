@@ -7,11 +7,10 @@ import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
   Stethoscope,
-  LogOut,
   User,
   Loader2,
 } from "lucide-react";
-import { signOut } from "firebase/auth";
+
 
 import { cn } from "@/lib/utils";
 import {
@@ -22,7 +21,6 @@ import {
 } from "@/components/ui/tooltip";
 import { Logo } from "./icons";
 import { useAuth } from "@/context/auth-context";
-import { auth } from "@/lib/firebase";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -38,11 +36,6 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   const pathname = usePathname();
   const router = useRouter();
   const { user, loading } = useAuth();
-
-  const handleLogout = async () => {
-    await signOut(auth);
-    router.push("/");
-  };
   
   React.useEffect(() => {
     if (!loading && !user) {
@@ -91,20 +84,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           </TooltipProvider>
         </nav>
         <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button
-                  onClick={handleLogout}
-                  className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-                >
-                  <LogOut className="h-5 w-5" />
-                  <span className="sr-only">Logout</span>
-                </button>
-              </TooltipTrigger>
-              <TooltipContent side="right">Logout</TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          {/* Logout button removed */}
         </nav>
       </aside>
       
@@ -116,7 +96,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
       {/* Mobile Bottom Nav */}
       <nav className="fixed bottom-0 left-0 z-50 w-full border-t bg-background sm:hidden">
-         <div className="grid h-16 grid-cols-4 mx-auto">
+         <div className="grid h-16 grid-cols-3 mx-auto">
             {navItems.map((item) => (
                  <Link
                     key={item.href}
@@ -130,13 +110,6 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                     <span className="text-xs">{item.label}</span>
                   </Link>
             ))}
-             <button
-              onClick={handleLogout}
-              className="inline-flex flex-col items-center justify-center px-5 text-muted-foreground hover:bg-muted"
-            >
-              <LogOut className="h-6 w-6 mb-1" />
-              <span className="text-xs">Logout</span>
-            </button>
          </div>
       </nav>
     </div>

@@ -16,8 +16,8 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { useAuth } from "@/context/auth-context";
 import { useToast } from "@/hooks/use-toast";
-import { updateProfile } from "firebase/auth";
-import { User, Loader2 } from "lucide-react";
+import { updateProfile, signOut } from "firebase/auth";
+import { User, Loader2, LogOut } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { auth } from "@/lib/firebase";
@@ -59,6 +59,12 @@ export default function AccountPage() {
       });
     }
   };
+
+  const handleLogout = async () => {
+    await signOut(auth);
+    router.push("/");
+  };
+
 
   if (loading) {
     return (
@@ -109,10 +115,14 @@ export default function AccountPage() {
                 <Button variant="outline" className="w-fit" onClick={handlePasswordChange}>Change Password</Button>
             </div>
             <Separator />
-            <div className="flex justify-end">
+            <div className="flex justify-between items-center">
                 <Button onClick={handleSaveChanges} disabled={isSaving}>
                   {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   Save Changes
+                </Button>
+                 <Button variant="outline" onClick={handleLogout}>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Logout
                 </Button>
             </div>
           </CardContent>
