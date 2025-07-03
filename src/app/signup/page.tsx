@@ -20,7 +20,7 @@ export default function SignupPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Mock signup logic
-    router.push("/dashboard");
+    router.push("/symptom-analyzer");
   };
 
   return (

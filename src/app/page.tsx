@@ -20,7 +20,7 @@ export default function LoginPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Mock login logic
-    router.push("/dashboard");
+    router.push("/symptom-analyzer");
   };
 
   return (
