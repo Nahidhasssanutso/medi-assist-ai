@@ -5,7 +5,7 @@ export function Logo(props: React.ComponentPropsWithoutRef<'div'>) {
   return (
     <div {...props}>
         <img
-          src="https://i.ibb.co/Jq6z9zQ/logo.png"
+          src="https://i.ibb.co/wJtW7tZ/logo.png"
           alt="medi assist ai logo"
           className="h-full w-full object-contain"
         />
