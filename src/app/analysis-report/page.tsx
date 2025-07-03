@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import { type SymptomAnalysisOutput } from "@/ai/flows/symptom-analysis";
 import { Button } from "@/components/ui/button";
@@ -118,7 +118,7 @@ export default function AnalysisReportPage() {
             ))}
           </CardContent>
         </Card>
-
+        
         <Card>
             <CardHeader>
                 <CardTitle className="flex items-center gap-2"><Utensils /> Food and Nutrition</CardTitle>
@@ -155,7 +155,7 @@ export default function AnalysisReportPage() {
             <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-red-800 dark:text-red-300">
                     <XCircle /> What NOT To Do
-                </CardTitle>
+                </Title>
             </CardHeader>
             <CardContent>
                 <ul className="list-disc space-y-2 pl-5">
