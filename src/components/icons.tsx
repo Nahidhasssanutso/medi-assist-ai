@@ -1,15 +1,13 @@
 import type { SVGProps } from "react";
-import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 export function Logo(props: React.ComponentPropsWithoutRef<'div'>) {
   return (
-    <div {...props} className={cn("relative", props.className)}>
-        <Image
+    <div {...props}>
+        <img
           src="https://i.ibb.co/6y62gds/image.png"
           alt="medi assist ai logo"
-          fill
-          sizes="48px"
+          className="h-full w-full object-contain"
         />
     </div>
   );
