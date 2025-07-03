@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -17,7 +18,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
 import {
   BarChart,
   Bar,
@@ -30,7 +30,11 @@ import {
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DashboardLayout } from "@/components/dashboard-layout";
-import { Activity, Apple, Zap } from "lucide-react";
+import { useAuth } from "@/context/auth-context";
+import { db } from "@/lib/firebase";
+import { collection, query, where, getDocs, orderBy, limit } from "firebase/firestore";
+import { type SymptomAnalysisOutput } from "@/ai/flows/symptom-analysis";
+import { format } from "date-fns";
 
 const chartData = [
   { month: "Jan", score: 65 },
@@ -41,19 +45,49 @@ const chartData = [
   { month: "Jun", score: 85 },
 ];
 
-const recentAnalyses = [
-  { symptom: "Headache, Fatigue", date: "2023-10-27", status: "Low Risk" },
-  { symptom: "Sore Throat", date: "2023-10-20", status: "Low Risk" },
-  { symptom: "Stomach Pain", date: "2023-10-15", status: "Medium Risk" },
-];
+interface AnalysisRecord {
+  id: string;
+  createdAt: { seconds: number; nanoseconds: number; };
+  report: SymptomAnalysisOutput;
+  symptoms: string;
+}
 
 export default function DashboardPage() {
+  const { user } = useAuth();
   const [loading, setLoading] = useState(true);
+  const [recentAnalyses, setRecentAnalyses] = useState<AnalysisRecord[]>([]);
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1500);
-    return () => clearTimeout(timer);
-  }, []);
+    const fetchAnalyses = async () => {
+      if (!user) {
+        setLoading(false);
+        return;
+      };
+
+      setLoading(true);
+      try {
+        const reportsRef = collection(db, "reports");
+        const q = query(
+          reportsRef, 
+          where("userId", "==", user.uid), 
+          orderBy("createdAt", "desc"),
+          limit(5)
+        );
+        const querySnapshot = await getDocs(q);
+        const analyses: AnalysisRecord[] = [];
+        querySnapshot.forEach((doc) => {
+          analyses.push({ id: doc.id, ...doc.data() } as AnalysisRecord);
+        });
+        setRecentAnalyses(analyses);
+      } catch (error) {
+        console.error("Error fetching analyses:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAnalyses();
+  }, [user]);
 
   return (
     <DashboardLayout>
@@ -174,35 +208,30 @@ export default function DashboardPage() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Symptom</TableHead>
-                    <TableHead className="text-right">Status</TableHead>
+                    <TableHead>Diagnosis</TableHead>
+                    <TableHead className="text-right">Date</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {recentAnalyses.map((analysis, index) => (
-                    <TableRow key={index}>
-                      <TableCell>
-                        <div className="font-medium">{analysis.symptom}</div>
-                        <div className="text-sm text-muted-foreground">
-                          {analysis.date}
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <Badge
-                          variant={
-                            analysis.status === "Low Risk"
-                              ? "default"
-                              : "destructive"
-                          }
-                          className={
-                            analysis.status === "Low Risk" ? "bg-accent text-accent-foreground" : ""
-                          }
-                        >
-                          {analysis.status}
-                        </Badge>
-                      </TableCell>
+                  {recentAnalyses.length === 0 ? (
+                    <TableRow>
+                      <TableCell colSpan={2} className="text-center h-24">No recent analyses found.</TableCell>
                     </TableRow>
-                  ))}
+                  ) : (
+                    recentAnalyses.map((analysis) => (
+                      <TableRow key={analysis.id}>
+                        <TableCell>
+                          <div className="font-medium">{analysis.report.diseaseInfo.name}</div>
+                          <div className="text-sm text-muted-foreground truncate max-w-xs">
+                            {analysis.symptoms}
+                          </div>
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {analysis.createdAt ? format(new Date(analysis.createdAt.seconds * 1000), "PP") : "N/A"}
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  )}
                 </TableBody>
               </Table>
             )}

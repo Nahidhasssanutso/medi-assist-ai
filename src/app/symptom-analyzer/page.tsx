@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState } from "react";
@@ -20,6 +21,9 @@ import { DashboardLayout } from "@/components/dashboard-layout";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Loader2, Upload, X } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useAuth } from "@/context/auth-context";
+import { db } from "@/lib/firebase";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 const toDataURL = (file: File): Promise<string> =>
   new Promise((resolve, reject) => {
@@ -31,6 +35,7 @@ const toDataURL = (file: File): Promise<string> =>
 
 export default function SymptomAnalyzerPage() {
   const router = useRouter();
+  const { user } = useAuth();
   const [symptoms, setSymptoms] = useState("");
   const [affectedPlaceImage, setAffectedPlaceImage] = useState<File | null>(null);
   const [affectedPlaceImagePreview, setAffectedPlaceImagePreview] = useState<string | null>(null);
@@ -80,6 +85,16 @@ export default function SymptomAnalyzerPage() {
         affectedPlacePhoto,
         doctorReportPhoto,
       });
+
+      if (user) {
+        await addDoc(collection(db, "reports"), {
+          userId: user.uid,
+          createdAt: serverTimestamp(),
+          symptoms: symptoms,
+          seenDoctor: seenDoctor === 'yes',
+          report: result,
+        });
+      }
 
       localStorage.setItem("analysisResult", JSON.stringify(result));
       router.push("/analysis-report");
