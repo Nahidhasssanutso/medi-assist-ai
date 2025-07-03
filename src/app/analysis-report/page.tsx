@@ -155,7 +155,7 @@ export default function AnalysisReportPage() {
                 <div>
                     <h4 className="font-semibold mb-2">Foods to Avoid</h4>
                     <ul className="list-disc list-inside text-sm text-muted-foreground space-y-1">
-                        {foodAndNutrition.foodsToAvoid.map((food, i) => <li key-={i}>{food}</li>)}
+                        {foodAndNutrition.foodsToAvoid.map((food, i) => <li key={i}>{food}</li>)}
                     </ul>
                 </div>
                 <div>
