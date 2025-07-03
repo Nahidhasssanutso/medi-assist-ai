@@ -62,10 +62,19 @@ export default function SignupPage() {
       router.push("/symptom-analyzer");
     } catch (error: any) {
       console.error("Signup failed:", error);
+      let description = "An unexpected error occurred. Please try again.";
+      if (error.code === 'auth/email-already-in-use') {
+        description = "This email is already in use. Please use a different email or try logging in.";
+      } else if (error.code === 'auth/invalid-email') {
+        description = "Please enter a valid email address.";
+      } else if (error.code === 'auth/weak-password') {
+        description = "Password is too weak. It must be at least 6 characters long.";
+      }
+      
       toast({
         variant: "destructive",
         title: "Signup Failed",
-        description: "This email might already be in use.",
+        description,
       });
     } finally {
       setLoading(false);
