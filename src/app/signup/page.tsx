@@ -155,7 +155,7 @@ export default function SignupPage() {
           </div>
           <CardTitle className="text-2xl">Create an Account</CardTitle>
           <CardDescription>
-            Enter your information to get started with MediAssist AI.
+            Enter your information to get started with medi assist ai.
           </CardDescription>
         </CardHeader>
         <CardContent>

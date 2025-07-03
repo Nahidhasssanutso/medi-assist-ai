@@ -127,7 +127,7 @@ export default function LoginPage() {
           <div className="flex justify-center items-center mb-4">
             <Logo className="h-10 w-10" />
           </div>
-          <CardTitle className="text-2xl">Welcome to MediAssist AI</CardTitle>
+          <CardTitle className="text-2xl">Welcome to medi assist ai</CardTitle>
           <CardDescription>
             Your personal AI health companion.
           </CardDescription>
