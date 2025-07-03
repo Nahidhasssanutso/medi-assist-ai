@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { aiMedicalAssistant } from "@/ai/flows/ai-medical-assistant";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,30 +10,44 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-  CardDescription
+  CardDescription,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { DashboardLayout } from "@/components/dashboard-layout";
 import { cn } from "@/lib/utils";
-import { Bot, Loader2, Send, User } from "lucide-react";
+import { Bot, Info, Loader2, Send, User } from "lucide-react";
 
 interface Message {
   role: "user" | "assistant";
   content: string;
 }
 
-const initialMessages: Message[] = [
-    {
-        role: "assistant",
-        content: "Hello! I am your AI Medical Assistant. How can I help you today? Please describe your symptoms or ask a health-related question.",
-    },
-];
+const defaultInitialMessage: Message = {
+  role: "assistant",
+  content: "Hello! I am your AI Medical Assistant. How can I help you today? Please describe your symptoms or ask a health-related question.",
+};
 
 export default function ChatPage() {
-  const [messages, setMessages] = useState<Message[]>(initialMessages);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [chatContext, setChatContext] = useState<string | null>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const storedContext = localStorage.getItem("chatContext");
+    let initialMessages: Message[] = [defaultInitialMessage];
+    if (storedContext) {
+      setChatContext(storedContext);
+      initialMessages = [
+        {
+          role: "assistant",
+          content: "I've reviewed your recent analysis report. Feel free to ask any questions you have about it."
+        }
+      ];
+    }
+    setMessages(initialMessages);
+  }, []);
 
   useEffect(() => {
     if (scrollAreaRef.current) {
@@ -51,7 +65,10 @@ export default function ChatPage() {
     setLoading(true);
 
     try {
-      const result = await aiMedicalAssistant({ message: input });
+      const result = await aiMedicalAssistant({ 
+        message: input,
+        ...(chatContext && { context: chatContext }),
+       });
       const assistantMessage: Message = {
         role: "assistant",
         content: result.response,
@@ -81,6 +98,12 @@ export default function ChatPage() {
           </CardHeader>
           <CardContent className="flex-1 overflow-y-auto" ref={scrollAreaRef}>
             <div className="space-y-6">
+              {chatContext && (
+                 <div className="flex items-center gap-3 bg-blue-50 border border-blue-200 text-blue-800 text-sm rounded-md p-3 dark:bg-blue-950 dark:border-blue-800 dark:text-blue-300">
+                    <Info className="h-5 w-5"/>
+                    <p>This conversation is based on your recent symptom analysis report.</p>
+                 </div>
+              )}
               {messages.map((message, index) => (
                 <div
                   key={index}
