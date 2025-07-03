@@ -30,6 +30,17 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+
+    if (!process.env.NEXT_PUBLIC_FIREBASE_API_KEY) {
+      toast({
+        variant: "destructive",
+        title: "Configuration Error",
+        description: "Firebase API Key is missing. Please configure your .env file.",
+      });
+      setLoading(false);
+      return;
+    }
+    
     try {
       await signInWithEmailAndPassword(auth, email, password);
       router.push("/symptom-analyzer");
