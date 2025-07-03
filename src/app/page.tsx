@@ -15,12 +15,12 @@ export default function OnboardingPage() {
 
       <main className="flex-1 flex flex-col items-center justify-center text-center p-6 space-y-8">
         <Image
-          src="https://placehold.co/400x300.png"
-          alt="A friendly character pointing at a health chart"
+          src="https://placehold.co/400x400.png"
+          alt="A friendly doctor character holding a tablet with health icons"
           width={400}
-          height={300}
+          height={400}
           className="max-w-xs sm:max-w-sm"
-          data-ai-hint="health illustration"
+          data-ai-hint="doctor illustration"
         />
         <div className="space-y-2 max-w-md">
           <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
