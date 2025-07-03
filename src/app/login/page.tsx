@@ -15,29 +15,27 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Logo, GoogleIcon, FacebookIcon, AppleIcon } from "@/components/icons";
-import { 
-    createUserWithEmailAndPassword, 
-    updateProfile,
-    GoogleAuthProvider,
-    FacebookAuthProvider,
-    OAuthProvider,
-    signInWithPopup,
-    type AuthProvider as FirebaseAuthProvider
+import {
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  FacebookAuthProvider,
+  OAuthProvider,
+  signInWithPopup,
+  type AuthProvider as FirebaseAuthProvider,
 } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
-
-export default function SignupPage() {
+export default function LoginPage() {
   const router = useRouter();
   const { toast } = useToast();
-  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [socialLoading, setSocialLoading] = useState<string | null>(null);
+
 
   const handleSocialLogin = async (providerName: 'google' | 'facebook' | 'apple') => {
     setSocialLoading(providerName);
@@ -52,7 +50,7 @@ export default function SignupPage() {
       setSocialLoading(null);
       return;
     }
-    
+
     switch (providerName) {
       case 'google':
         provider = new GoogleAuthProvider();
@@ -95,14 +93,6 @@ export default function SignupPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password.length < 6) {
-      toast({
-        variant: "destructive",
-        title: "Signup Failed",
-        description: "Password must be at least 6 characters long.",
-      });
-      return;
-    }
     setLoading(true);
 
     if (!process.env.NEXT_PUBLIC_FIREBASE_API_KEY) {
@@ -114,32 +104,16 @@ export default function SignupPage() {
       setLoading(false);
       return;
     }
-
+    
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      if (auth.currentUser) {
-        await updateProfile(auth.currentUser, { displayName: fullName });
-      }
-      toast({
-        title: "Account Created",
-        description: "You have been successfully signed up.",
-      });
+      await signInWithEmailAndPassword(auth, email, password);
       router.push("/symptom-analyzer");
     } catch (error: any) {
-      console.error("Signup failed:", error);
-      let description = "An unexpected error occurred. Please try again.";
-      if (error.code === 'auth/email-already-in-use') {
-        description = "This email is already in use. Please use a different email or try logging in.";
-      } else if (error.code === 'auth/invalid-email') {
-        description = "Please enter a valid email address.";
-      } else if (error.code === 'auth/weak-password') {
-        description = "Password is too weak. It must be at least 6 characters long.";
-      }
-      
+      console.error("Login failed:", error);
       toast({
         variant: "destructive",
-        title: "Signup Failed",
-        description,
+        title: "Login Failed",
+        description: "Please check your credentials and try again.",
       });
     } finally {
       setLoading(false);
@@ -153,24 +127,13 @@ export default function SignupPage() {
           <Link href="/" className="flex justify-center items-center mb-4">
             <Logo className="h-10 w-10" />
           </Link>
-          <CardTitle className="text-2xl">Create an Account</CardTitle>
+          <CardTitle className="text-2xl">Login</CardTitle>
           <CardDescription>
-            Enter your information to get started with medi assist ai.
+            Enter your credentials to access your account.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="grid gap-4">
-            <div className="grid gap-2">
-              <Label htmlFor="full-name">Full Name</Label>
-              <Input 
-                id="full-name" 
-                placeholder="John Doe" 
-                required 
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-                disabled={loading}
-              />
-            </div>
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -184,7 +147,15 @@ export default function SignupPage() {
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="password">Password (min. 6 characters)</Label>
+              <div className="flex items-center">
+                <Label htmlFor="password">Password</Label>
+                <Link
+                  href="/forgot-password"
+                  className="ml-auto inline-block text-sm underline"
+                >
+                  Forgot your password?
+                </Link>
+              </div>
               <Input 
                 id="password" 
                 type="password" 
@@ -196,7 +167,7 @@ export default function SignupPage() {
             </div>
             <Button type="submit" className="w-full" disabled={loading || !!socialLoading}>
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Create an account
+              Login
             </Button>
           </form>
             <div className="relative my-4">
@@ -221,9 +192,9 @@ export default function SignupPage() {
                 </Button>
             </div>
           <div className="mt-4 text-center text-sm">
-            Already have an account?{" "}
-            <Link href="/login" className="underline">
-              Login
+            Don&apos;t have an account?{" "}
+            <Link href="/signup" className="underline">
+              Sign up
             </Link>
           </div>
         </CardContent>

@@ -60,9 +60,9 @@ export default function ForgotPasswordPage() {
     <div className="flex items-center justify-center min-h-screen bg-background p-4">
       <Card className="mx-auto max-w-sm w-full">
         <CardHeader className="text-center">
-          <div className="flex justify-center items-center mb-4">
+          <Link href="/" className="flex justify-center items-center mb-4">
             <Logo className="h-10 w-10" />
-          </div>
+          </Link>
           <CardTitle className="text-2xl">Forgot Password?</CardTitle>
           <CardDescription>
             Enter your email and we&apos;ll send you a link to reset your password.
@@ -89,7 +89,7 @@ export default function ForgotPasswordPage() {
           </form>
           <div className="mt-4 text-center text-sm">
             Remember your password?{" "}
-            <Link href="/" className="underline">
+            <Link href="/login" className="underline">
               Login
             </Link>
           </div>
