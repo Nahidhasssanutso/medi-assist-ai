@@ -86,37 +86,22 @@ export default function AnalysisReportPage() {
             </CardHeader>
         </Card>
 
-        <div className="grid md:grid-cols-2 gap-6">
-            <Card className="bg-green-50 border-green-200 dark:bg-green-950 dark:border-green-800">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-green-800 dark:text-green-300">
-                        <CheckCircle /> What To Do Now
-                    </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                    <ul className="list-disc space-y-2 pl-5">
-                        {whatToDoNow.immediateSteps.map((step, i) => <li key={i}>{step}</li>)}
-                    </ul>
-                    <Alert>
-                        <AlertTitle>Emergency Advice</AlertTitle>
-                        <AlertDescription>{whatToDoNow.emergencyAdvice}</AlertDescription>
-                    </Alert>
-                </CardContent>
-            </Card>
-
-             <Card className="bg-red-50 border-red-200 dark:bg-red-950 dark:border-red-800">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-red-800 dark:text-red-300">
-                        <XCircle /> What NOT To Do
-                    </CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <ul className="list-disc space-y-2 pl-5">
-                        {whatNotToDo.map((item, i) => <li key={i}>{item}</li>)}
-                    </ul>
-                </CardContent>
-            </Card>
-        </div>
+        <Card className="bg-green-50 border-green-200 dark:bg-green-950 dark:border-green-800">
+            <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-green-800 dark:text-green-300">
+                    <CheckCircle /> What To Do Now
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+                <ul className="list-disc space-y-2 pl-5">
+                    {whatToDoNow.immediateSteps.map((step, i) => <li key={i}>{step}</li>)}
+                </ul>
+                <Alert>
+                    <AlertTitle>Emergency Advice</AlertTitle>
+                    <AlertDescription>{whatToDoNow.emergencyAdvice}</AlertDescription>
+                </Alert>
+            </CardContent>
+        </Card>
 
         <Card>
           <CardHeader>
@@ -163,6 +148,19 @@ export default function AnalysisReportPage() {
                         {foodAndNutrition.lifestyleGuidelines.map((tip, i) => <li key={i}>{tip}</li>)}
                     </ul>
                 </div>
+            </CardContent>
+        </Card>
+
+        <Card className="bg-red-50 border-red-200 dark:bg-red-950 dark:border-red-800">
+            <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-red-800 dark:text-red-300">
+                    <XCircle /> What NOT To Do
+                </CardTitle>
+            </CardHeader>
+            <CardContent>
+                <ul className="list-disc space-y-2 pl-5">
+                    {whatNotToDo.map((item, i) => <li key={i}>{item}</li>)}
+                </ul>
             </CardContent>
         </Card>
 
