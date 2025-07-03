@@ -1,0 +1,48 @@
+'use server';
+
+/**
+ * @fileOverview This file defines a Genkit flow for an AI medical assistant.
+ *
+ * - aiMedicalAssistant - A function that allows users to chat with an AI medical assistant for personalized advice and support.
+ * - AiMedicalAssistantInput - The input type for the aiMedicalAssistant function.
+ * - AiMedicalAssistantOutput - The return type for the aiMedicalAssistant function.
+ */
+
+import {ai} from '@/ai/genkit';
+import {z} from 'genkit';
+
+const AiMedicalAssistantInputSchema = z.object({
+  message: z.string().describe('The user message to the AI medical assistant.'),
+});
+export type AiMedicalAssistantInput = z.infer<typeof AiMedicalAssistantInputSchema>;
+
+const AiMedicalAssistantOutputSchema = z.object({
+  response: z.string().describe('The AI medical assistant response.'),
+});
+export type AiMedicalAssistantOutput = z.infer<typeof AiMedicalAssistantOutputSchema>;
+
+export async function aiMedicalAssistant(input: AiMedicalAssistantInput): Promise<AiMedicalAssistantOutput> {
+  return aiMedicalAssistantFlow(input);
+}
+
+const prompt = ai.definePrompt({
+  name: 'aiMedicalAssistantPrompt',
+  input: {schema: AiMedicalAssistantInputSchema},
+  output: {schema: AiMedicalAssistantOutputSchema},
+  prompt: `You are a 24/7 AI Medical Assistant, tailored to understand user symptoms and guide them toward recovery. Based on a curated medical knowledge base, you provide personalized advice and support. 
+
+  User Message: {{{message}}}
+  Response: `,
+});
+
+const aiMedicalAssistantFlow = ai.defineFlow(
+  {
+    name: 'aiMedicalAssistantFlow',
+    inputSchema: AiMedicalAssistantInputSchema,
+    outputSchema: AiMedicalAssistantOutputSchema,
+  },
+  async input => {
+    const {output} = await prompt(input);
+    return output!;
+  }
+);
