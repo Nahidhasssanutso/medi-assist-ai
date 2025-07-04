@@ -8,6 +8,7 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
+    unoptimized: true, // Required for static export
     remotePatterns: [
       {
         protocol: 'https',
@@ -23,6 +24,9 @@ const nextConfig = {
       },
     ],
   },
+  output: 'export', // Enable static export
+  trailingSlash: true, // Recommended for static hosting
+  distDir: 'out', // Output directory for static files
 };
 
 module.exports = nextConfig;
