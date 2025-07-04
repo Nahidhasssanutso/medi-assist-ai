@@ -27,6 +27,11 @@ const nextConfig = {
   output: 'export', // Enable static export
   trailingSlash: true, // Recommended for static hosting
   distDir: 'out', // Output directory for static files
+  swcMinify: true,
+  experimental: {
+    swcTraceProfiling: true,
+    swcPlugins: [],
+  },
 };
 
 module.exports = nextConfig;
