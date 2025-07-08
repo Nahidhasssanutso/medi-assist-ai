@@ -1,5 +1,8 @@
 'use server';
 
+// Note: This will run on the client side in static export mode
+// Consider moving AI logic to client-side or using API routes with serverless functions
+
 /**
  * @fileOverview AI flow for analyzing user-provided symptoms and providing a detailed preliminary diagnosis report.
  *

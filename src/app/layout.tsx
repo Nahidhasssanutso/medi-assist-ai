@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { AuthProvider } from "@/context/auth-context";
 
 export const metadata: Metadata = {
-  title: "medi assist ai",
+  title: "HealthWise AI",
   description: "Your Personal AI Health Companion — Built on Firebase",
 };
 

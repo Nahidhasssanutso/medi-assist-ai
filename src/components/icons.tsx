@@ -4,11 +4,9 @@ import { cn } from "@/lib/utils";
 export function Logo(props: React.ComponentPropsWithoutRef<'div'>) {
   return (
     <div {...props}>
-        <img
-          src="/logo.png"
-          alt="medi assist ai logo"
-          className="h-full w-full object-contain"
-        />
+        <div className="h-full w-full bg-primary rounded-full flex items-center justify-center text-primary-foreground font-bold text-lg">
+          M
+        </div>
     </div>
   );
 }

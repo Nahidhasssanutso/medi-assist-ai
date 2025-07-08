@@ -1,5 +1,8 @@
 'use server';
 
+// Note: This will run on the client side in static export mode
+// Consider moving AI logic to client-side or using API routes with serverless functions
+
 /**
  * @fileOverview This file defines a Genkit flow for an AI medical assistant.
  *

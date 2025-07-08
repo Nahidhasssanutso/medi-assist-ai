@@ -1,0 +1,65 @@
+[build]
+  publish = "out"
+  command = "npm run build"
+
+[build.environment]
+  NODE_VERSION = "18"
+  NPM_VERSION = "9"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+
+# Handle client-side routing
+[[redirects]]
+  from = "/symptom-analyzer"
+  to = "/symptom-analyzer/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/dashboard"
+  to = "/dashboard/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/chat"
+  to = "/chat/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/analysis-report"
+  to = "/analysis-report/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/account"
+  to = "/account/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/login"
+  to = "/login/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/signup"
+  to = "/signup/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/forgot-password"
+  to = "/forgot-password/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/recommendations"
+  to = "/recommendations/index.html"
+  status = 200

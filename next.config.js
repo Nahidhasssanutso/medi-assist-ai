@@ -27,11 +27,15 @@ const nextConfig = {
   output: 'export', // Enable static export
   trailingSlash: true, // Recommended for static hosting
   distDir: 'out', // Output directory for static files
-  swcMinify: true,
+  swcMinify: false, // Disable SWC minifier to avoid binary issues
   experimental: {
-    swcTraceProfiling: true,
-    swcPlugins: [],
+    // Remove swc-related experimental features
   },
+  // Add basePath if needed for subdirectory deployment
+  // basePath: '/your-subdirectory',
+  
+  // Ensure all pages are statically generated
+  generateStaticParams: true,
 };
 
 module.exports = nextConfig;

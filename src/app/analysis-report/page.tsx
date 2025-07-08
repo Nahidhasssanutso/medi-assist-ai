@@ -155,7 +155,7 @@ export default function AnalysisReportPage() {
             <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-red-800 dark:text-red-300">
                     <XCircle /> What NOT To Do
-                </Title>
+                </CardTitle>
             </CardHeader>
             <CardContent>
                 <ul className="list-disc space-y-2 pl-5">
