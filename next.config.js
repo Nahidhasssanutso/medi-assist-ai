@@ -34,8 +34,6 @@ const nextConfig = {
   // Add basePath if needed for subdirectory deployment
   // basePath: '/your-subdirectory',
   
-  // Ensure all pages are statically generated
-  generateStaticParams: true,
 };
 
 module.exports = nextConfig;
